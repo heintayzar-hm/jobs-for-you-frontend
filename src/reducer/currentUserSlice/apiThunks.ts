@@ -22,8 +22,8 @@ export const loginThunk = createAsyncThunk<
       } as Header;
       return {
         header: responseHeaders,
-        attributes: response?.data?.data?.user,
-        status: response?.data?.status,
+        attributes: response?.data?.data,
+        status: response?.status,
       };
     }
     return rejectWithValue(response.data.errors);
@@ -49,17 +49,11 @@ export const registerThunk = createAsyncThunk
         expiry: response.headers.expiry,
         uid: response.headers.uid,
       } as Header;
-      console.log(
-        {
-          header: responseHeaders,
-          attributes: response?.data?.data,
-          status: response?.data?.status,
-        }
-      )
+
       return {
         header: responseHeaders,
         attributes: response?.data?.data,
-        status: response?.data?.status,
+        status: response?.status,
       };
     }
     return rejectWithValue(response.data.errors);

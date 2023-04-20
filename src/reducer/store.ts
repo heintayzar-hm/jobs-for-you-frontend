@@ -1,4 +1,4 @@
-import {  configureStore } from '@reduxjs/toolkit';
+import {  configureStore, isPlain } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
 import { useDispatch } from 'react-redux'
 import thunk from 'redux-thunk';
@@ -7,9 +7,16 @@ import rootReducer from './rootReducer';
 
 
 
+
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk, logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(
+    {
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+      }
+    }
+  ).concat(thunk, logger),
 });
 
 export const persistor = persistStore(store);

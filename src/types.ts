@@ -1,8 +1,5 @@
 import { Dispatch } from "react"
 
-export type SIGNIN_REQUEST_SENT = 'redux-token-auth/SIGNIN_REQUEST_SENT'
-export const SIGNIN_REQUEST_SENT: SIGNIN_REQUEST_SENT = 'redux-token-auth/SIGNIN_REQUEST_SENT'
-
 
 
 
@@ -23,9 +20,6 @@ export interface MyKnownError {
     // ...
   }
 
-export interface SignInRequestSentAction {
-    readonly type: SIGNIN_REQUEST_SENT
-  }
 
 export type ValidateionError = {
     email: string;

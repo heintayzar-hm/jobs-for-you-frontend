@@ -4,11 +4,13 @@ import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { SignInRequestSentAction, UserLoginDetails, ValidateionError} from  "../../types"
+import {  UserLoginDetails, ValidateionError} from  "../../types"
 // import { setNotice, setAlert, clearAll } from '../../../slices/appSlice/appSlice';
 import { loginThunk } from '../../reducer/currentUserSlice/apiThunks';
 import { AppDispatch } from '../../reducer/store';
-import SmallErrorMessage from '../../components/SmallErrorMessgae/SmallErrorMessage';
+import SmallErrorMessage from '../../components/Messages/SmallErrorMessgae/SmallErrorMessage';
+import { useSelector } from 'react-redux';
+import { setAlert, setNotice } from '../../reducer/appSlice/appSlice';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required!!'),
@@ -22,6 +24,7 @@ const Login = () => {
     const [errors, setErrors] = useState<ValidateionError>();
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const app = useSelector((state: any) => state.app);
   // handle app state
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -33,7 +36,14 @@ const Login = () => {
             email: res.email,
             password: res.password
         }
-     dispatch(loginThunk(loginDetails))
+      dispatch(loginThunk(loginDetails)).then((res) => {
+
+        if(loginThunk.fulfilled.match(res)){
+          dispatch(setNotice("Login successful"))
+        } else{
+          dispatch(setAlert("Invalid email or password"))
+        }
+      })
     }).catch((err) => {
       // if validation fails, set the errors
       const newErrors = {} as ValidateionError;

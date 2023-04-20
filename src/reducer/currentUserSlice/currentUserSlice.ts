@@ -13,7 +13,7 @@ const authPersistConfig = {
   key: 'currentUser',
   storage,
   whitelist: ['isSignedIn', 'attributes', 'header'],
-  blacklist: ['error'],
+  blacklist: ['error', 'loading'],
 };
 
 const initialState = {

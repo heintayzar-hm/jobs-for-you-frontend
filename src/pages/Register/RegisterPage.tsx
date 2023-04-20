@@ -6,7 +6,8 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { registerThunk } from '../../reducer/currentUserSlice/apiThunks';
 import { UserRegisterDetails, ValidateionError } from '../../types';
 import { AppDispatch } from '../../reducer/store';
-import SmallErrorMessage from '../../components/SmallErrorMessgae/SmallErrorMessage';
+import SmallErrorMessage from '../../components/Messages/SmallErrorMessgae/SmallErrorMessage';
+import { setAlert, setNotice } from '../../reducer/appSlice/appSlice';
 
 const RegisterSchema = Yup.object().shape({
   name: Yup.string().min(2, 'Name is Too Short!').max(50, 'Name is Too Long!').required('Name is Required'),
@@ -37,7 +38,13 @@ const Register = () => {
                 password: res.password,
                 confirmPassword: res.confirmPassword || res.password,
           }
-        dispatch(registerThunk(registerDetails));
+          dispatch(registerThunk(registerDetails)).then((res) => {
+            if (registerThunk.fulfilled.match(res)) {
+              dispatch(setNotice('Registration successful'))
+            } else {
+              dispatch(setAlert('Registration failed'))
+            }
+          });
       }).catch((err) => {
         const newErrors = {} as ValidateionError;
 
