@@ -8,10 +8,13 @@ const axiosInstance = axios.create(axiosConfig);
 
 axiosInstance.interceptors.request.use((config :any) => {
   const currentUser = JSON.parse(localStorage.getItem('persist:currentUser') || '{}');
-  if (currentUser?.accessToken) {
-    config.headers['access-token'] = currentUser?.accessToken;
-    config.headers.client = currentUser?.client;
-    config.headers.uid = currentUser?.uid;
+  const header = JSON.parse(currentUser.header);
+  if (currentUser["header"] && header["access-token"]) {
+    config.headers['access-token'] = header["access-token"];
+    config.headers.client = header?.client;
+    config.headers.uid = header?.uid;
+    config.headers['token-type'] = header["token-type"];
+    config.headers.expiry = header?.expiry;
   }
   return config;
 });

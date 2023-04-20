@@ -63,4 +63,5 @@ export const registerThunk = createAsyncThunk
     }
     return rejectWithValue(error.message);
   }
-});
+  });
+

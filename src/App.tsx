@@ -4,6 +4,11 @@ import Login from './pages/Login/LoginPage'
 import Register from './pages/Register/RegisterPage'
 import AlertMessage from './components/Messages/AlertMessage/AlertMessage'
 import NoticeMessage from './components/Messages/NoticeMessage/NoticeMessage'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import HomePage from './pages/Home/HomePage'
+import AuthLayout from './pages/Layouts/AuthLayout/AuthLayout'
+import ProtectedRoute from './pages/Layouts/UserLayout/ProtectedRoute'
+import AdminRoute from './pages/Layouts/AdminLayout/AdminRoute'
 
 const App = () => {
   // const currentUser = useSelector((state: any) => state.user.currentUser)
@@ -16,7 +21,28 @@ const App = () => {
         {alert && <AlertMessage message={alert} />}
       {notice && <NoticeMessage message={notice} /> }
 
-      <Login />
+      <Routes>
+          <Route path="/" element={<HomePage />} />
+\          {/* guests routes */}
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+          {/* protected routes aka users routes */}
+          <Route element={<ProtectedRoute />}>
+            {/* this is the example route and usage you can find how to use it in that component */}
+            <Route path="/user" element={<HomePage />} />
+          </Route>
+
+          {/* You can define admin routes here */}
+
+          <Route element={<AdminRoute />}>
+            {/* this is the example route and usage you can find how to use it in that component */}
+          </Route>
+
+          {/* 404 redirect to / */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
     </div>
   )
 }

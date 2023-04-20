@@ -53,4 +53,11 @@ export interface UserState {
      header: Header;
 }
 
+export interface UsersState {
+    users: any[];
+    errors: MyKnownError[] | [];
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed',
+    user: any;
+}
+
 
