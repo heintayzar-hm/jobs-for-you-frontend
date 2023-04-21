@@ -2,12 +2,13 @@
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { loginUser, registerUser } from '../../api/authApi/auth';
-import { Header, MyKnownError, UserLoginDetails, UserLoginResponse, UserRegisterDetails} from '../../types';
+import { Header, UserLoginDetails, UserLoginResponse, UserRegisterDetails} from '../../types';
+import {  isAxiosError } from 'axios';
 export const loginThunk = createAsyncThunk<
     UserLoginResponse,
     UserLoginDetails,
     {
-        rejectValue: MyKnownError[];
+        rejectValue: string[]
       }
     >('/auth/login', async (credentials, { rejectWithValue }) => {
   try {
@@ -27,17 +28,25 @@ export const loginThunk = createAsyncThunk<
       };
     }
     return rejectWithValue(response.data.errors);
-  } catch (error: any) {
-    if (error.response.status === 401) {
-      return rejectWithValue(error.response.data.errors);
+  } catch (error) {
+    if (isAxiosError(error)) {
+      if (error?.response?.status === 401) {
+        return rejectWithValue(error.response.data.errors);
+      }
+      return rejectWithValue([
+         error.message,
+      ]);
     }
-    return rejectWithValue(error.message);
+    return rejectWithValue([
+      "Something went wrong"
+    ]);
   }
 });
 
 
-export const registerThunk = createAsyncThunk
-  <UserLoginResponse, UserRegisterDetails, { rejectValue: MyKnownError[] }>
+export const registerThunk = createAsyncThunk<
+  UserLoginResponse, UserRegisterDetails, { rejectValue: string[] }
+>
   ('/auth/register', async (userData, { rejectWithValue }) => {
   try {
     const response = await registerUser(userData);
@@ -57,11 +66,18 @@ export const registerThunk = createAsyncThunk
       };
     }
     return rejectWithValue(response.data.errors);
-  } catch (error:any) {
-    if (error.response.status === 422) {
-      return rejectWithValue(error.response.data.errors);
+  } catch (error) {
+    if(isAxiosError(error)) {
+      if (error?.response?.status === 401) {
+        return rejectWithValue(error.response.data.errors);
+      }
+      return rejectWithValue([
+        error.message,
+      ]);
     }
-    return rejectWithValue(error.message);
+    return rejectWithValue([
+      "Something went wrong"
+    ]);
   }
   });
 

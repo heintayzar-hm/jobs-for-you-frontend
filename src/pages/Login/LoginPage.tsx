@@ -1,5 +1,5 @@
 
-import React, { FormEvent, useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,6 @@ import {  UserLoginDetails, ValidateionError} from  "../../types"
 import { loginThunk } from '../../reducer/currentUserSlice/apiThunks';
 import { AppDispatch } from '../../reducer/store';
 import SmallErrorMessage from '../../components/Messages/SmallErrorMessgae/SmallErrorMessage';
-import { useSelector } from 'react-redux';
 import { setAlert, setNotice } from '../../reducer/appSlice/appSlice';
 
 const LoginSchema = Yup.object().shape({
@@ -24,7 +23,6 @@ const Login = () => {
     const [errors, setErrors] = useState<ValidateionError>();
   const [showPassword, setShowPassword] = useState(false);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const app = useSelector((state: any) => state.app);
   // handle app state
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -44,18 +42,18 @@ const Login = () => {
           dispatch(setAlert("Invalid email or password"))
         }
       })
-    }).catch((err) => {
+    }).catch((err :Yup.ValidationError) => {
       // if validation fails, set the errors
       const newErrors = {} as ValidateionError;
 
-        err.inner.forEach((error :any) => {
+        err.inner.forEach((error) => {
             newErrors[error.path as keyof ValidateionError] = error.message;
         })
       setErrors(newErrors);
     });
   };
 
-  const showHandler = (e: any) => {
+  const showHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowPassword(!showPassword);
     if(passwordRef.current){

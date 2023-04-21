@@ -3,11 +3,11 @@
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import {  createSlice } from '@reduxjs/toolkit';
 import {
   loginThunk, registerThunk,
 } from './apiThunks';
-import { UserLoginResponse, UserState } from '../../types';
+import { Header, UserLoginResponse, UserState } from '../../types';
 
 const authPersistConfig = {
   key: 'currentUser',
@@ -19,9 +19,9 @@ const authPersistConfig = {
 const initialState = {
   isSignedIn: false,
   loading: 'idle',
-  attributes: {},
+  attributes: {} as UserLoginResponse['attributes'],
   errors: [],
-  header: {},
+  header: {} as Header,
 } as UserState;
 
 const currentUserSlice = createSlice({

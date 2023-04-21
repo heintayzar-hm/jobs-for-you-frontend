@@ -1,4 +1,4 @@
-import {  configureStore, isPlain } from '@reduxjs/toolkit';
+import {  configureStore } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
 import { useDispatch } from 'react-redux'
 import thunk from 'redux-thunk';

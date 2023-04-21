@@ -3,14 +3,14 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { UserLoginResponse, UsersState } from '../../types';
+import { UserData, UsersState } from '../../types';
 import { getUsersThunk } from './apiThunks';
 
 const initialState = {
     users: [],
     errors: [],
     loading: 'idle',
-    user: {},
+    user: {} as UserData,
 } as UsersState;
 
 const usersSlice = createSlice({
@@ -20,7 +20,7 @@ const usersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getUsersThunk.fulfilled, (state, action) => (
-      { ...state, users: action.payload, loading: 'idle' }
+      { ...state, users: action.payload.attributes, loading: 'idle' }
     ));
   },
 });

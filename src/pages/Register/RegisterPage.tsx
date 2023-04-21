@@ -45,17 +45,17 @@ const Register = () => {
               dispatch(setAlert('Registration failed'))
             }
           });
-      }).catch((err) => {
+      }).catch((err :Yup.ValidationError) => {
         const newErrors = {} as ValidateionError;
 
-        err.inner.forEach((error :any) => {
+        err.inner.forEach((error) => {
             newErrors[error.path as keyof ValidateionError] = error.message;
         })
       setErrors(newErrors);
       });
   };
 
-  const showHandler = (e: any) => {
+  const showHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowPassword(!showPassword);
     if(passwordRef.current){
@@ -63,7 +63,7 @@ const Register = () => {
     }
   };
 
-  const showConfirmHandler = (e: any) => {
+  const showConfirmHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowConfirmPassword(!showConfirmPassword);
     if (confirmPasswordRef.current) {

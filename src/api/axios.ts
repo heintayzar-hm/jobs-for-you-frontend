@@ -1,15 +1,15 @@
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const axiosConfig = {
+const axiosConfig: AxiosRequestConfig = {
   baseURL: "http://127.0.0.1:3000/",
 };
 
-const axiosInstance = axios.create(axiosConfig);
+const axiosInstance: AxiosInstance = axios.create(axiosConfig);
 
-axiosInstance.interceptors.request.use((config :any) => {
+axiosInstance.interceptors.request.use((config) => {
   const currentUser = JSON.parse(localStorage.getItem('persist:currentUser') || '{}');
   const header = JSON.parse(currentUser.header);
-  if (currentUser["header"] && header["access-token"]) {
+  if (currentUser["header"] && header["access-token"] && config?.headers) {
     config.headers['access-token'] = header["access-token"];
     config.headers.client = header?.client;
     config.headers.uid = header?.uid;

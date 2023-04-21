@@ -9,11 +9,12 @@ import HomePage from './pages/Home/HomePage'
 import AuthLayout from './pages/Layouts/AuthLayout/AuthLayout'
 import ProtectedRoute from './pages/Layouts/UserLayout/ProtectedRoute'
 import AdminRoute from './pages/Layouts/AdminLayout/AdminRoute'
+import { RootState } from './reducer/rootReducer'
 
 const App = () => {
   // const currentUser = useSelector((state: any) => state.user.currentUser)
-  const alert = useSelector((state :any) => state.app.alert);
-  const notice = useSelector((state :any) => state.app.notice);
+  const alert = useSelector((state :RootState) => state.app.alert);
+  const notice = useSelector((state :RootState) => state.app.notice);
 
   // console.log(currentUser)
   return (

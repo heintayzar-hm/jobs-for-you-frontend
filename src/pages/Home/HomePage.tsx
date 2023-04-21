@@ -1,22 +1,22 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAlert } from '../../reducer/appSlice/appSlice';
 import { AppDispatch } from '../../reducer/store';
 import { getUsersThunk } from '../../reducer/usersSlice/apiThunks';
+import { RootState } from '../../reducer/rootReducer';
+import { UserData } from '../../types';
 
 const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const users = useSelector((state:any) => state.users.users.attributes);
+  const users = useSelector((state:RootState) => state.users.users);
   useEffect(() => {
     dispatch(getUsersThunk())
   }, [dispatch]);
 
 //   if (loading) return <Loading />;
-  console.log(users)
   return (
 
       <ul className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(300px,_1fr))] gap-9">
-      {users.map((user: any) => (
+      {users.map((user: UserData) => (
         <li key={user.id}>
           {user.name}
         </li>

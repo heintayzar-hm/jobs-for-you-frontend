@@ -1,7 +1,3 @@
-import { Dispatch } from "react"
-
-
-
 
 export interface UserLoginDetails {
     readonly email: string
@@ -15,10 +11,6 @@ export interface UserRegisterDetails {
     readonly confirmPassword: string
 }
 
-export interface MyKnownError {
-    errorMessage: string
-    // ...
-  }
 
 
 export type ValidateionError = {
@@ -49,15 +41,26 @@ export interface UserState {
      isSignedIn: boolean;
      loading: 'idle' | 'pending' | 'succeeded' | 'failed'
     attributes: UserLoginResponse['attributes'];
-    errors: MyKnownError[] | [];
+    errors: string[];
      header: Header;
 }
 
+export interface UserData {
+    id: number;
+    email: string;
+    name: string;
+}
+
+export interface UsersResponseType {
+    attributes: UserData[];
+    status: number;
+}
+
 export interface UsersState {
-    users: any[];
-    errors: MyKnownError[] | [];
+    users: UserData[];
+    errors: string[];
     loading: 'idle' | 'pending' | 'succeeded' | 'failed',
-    user: any;
+    user: UserData;
 }
 
 
